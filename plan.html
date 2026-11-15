@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F3A5F">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="기념일과 하고 싶은 말을 미리 적어 두고, 선물까지 미리 골라 두면 때가 되어 그 선물과 메시지를 함께 알려 주는 앱 — 서비스 기획서">
+<!-- 공유 링크 미리보기(카카오톡 등). 배포 후 og:image·og:url 을 절대 주소로 바꾸면 썸네일이 표시됩니다. -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="기념일 챙김 — 서비스 기획서">
+<meta property="og:description" content="기념일과 하고 싶은 말을 미리 적어 두고, 선물까지 미리 골라 두면 때가 되어 그 선물과 메시지를 함께 알려 주는 앱">
+<meta property="og:image" content="og-image.png">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<!-- 검색 노출을 원하지 않을 때만 유지하세요. 포트폴리오로 공개하려면 이 줄을 지우면 됩니다. -->
+<meta name="robots" content="noindex">
+<title>기념일 챙김 — 서비스 기획서</title>
+<style>
+:root{
+  --navy:#1F3A5F;
+  --navy-2:#2B4A6F;
+  --green:#2F7D54;
+  --green-tint:#EEF6F0;
+  --amber:#B07D13;
+  --amber-tint:#FDF6E8;
+  --red:#B03A2E;
+  --ink:#1E2328;
+  --ink-2:#4A5460;
+  --muted:#6B7280;
+  --faint:#8B9199;
+  --line:#E3E6EA;
+  --line-2:#EDEFF2;
+  --card:#FFFFFF;
+  --page:#F1F3F6;
+  --radius:14px;
+}
+html{scroll-behavior:smooth}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--page);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕","Noto Sans KR",system-ui,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px;
+  line-height:1.78;
+  letter-spacing:-0.01em;
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+.wrap{max-width:700px;margin:0 auto;padding:0 16px 56px}
+
+/* ---------- 표지 ---------- */
+.hero{
+  background:var(--navy);
+  color:#fff;
+  padding:44px 20px 30px;
+  border-radius:0 0 22px 22px;
+}
+.hero-inner{max-width:728px;margin:0 auto}
+.kicker{
+  margin:0 0 14px;
+  font-size:13px;
+  letter-spacing:.04em;
+  color:#B7C6DA;
+}
+.hero h1{
+  margin:0;
+  font-size:31px;
+  line-height:1.28;
+  letter-spacing:-0.03em;
+  font-weight:800;
+}
+.hero h1 .soft{font-weight:600;font-size:18px;color:#9FB3CC;letter-spacing:0}
+.lede{
+  margin:14px 0 0;
+  font-size:15.5px;
+  line-height:1.75;
+  color:#DCE4EF;
+}
+.chips{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.chips li{
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;
+  padding:7px 12px;
+  font-size:13px;
+  text-align:center;
+  color:#E7EDF6;
+}
+
+/* ---------- 목차 ---------- */
+.toc{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  margin:-14px 0 18px;
+  padding:6px 16px 14px;
+}
+.toc summary{
+  cursor:pointer;
+  list-style:none;
+  font-weight:700;
+  font-size:15px;
+  color:var(--navy);
+  padding:12px 0 10px;
+}
+.toc summary::-webkit-details-marker{display:none}
+.toc summary::after{content:"▾";float:right;color:var(--muted);font-size:13px}
+.toc details[open] summary::after{content:"▴"}
+.toc ol{margin:0;padding:0 0 0 0;list-style:none;counter-reset:toc}
+.toc li{margin:0;counter-increment:toc}
+.toc a{
+  display:block;
+  padding:7px 2px;
+  border-top:1px solid var(--line-2);
+  color:var(--ink-2);
+  text-decoration:none;
+  font-size:14.5px;
+}
+.toc a .n{
+  display:inline-block;
+  min-width:22px;
+  color:var(--faint);
+  font-variant-numeric:tabular-nums;
+  font-size:13px;
+}
+
+/* ---------- 섹션 ---------- */
+section.sec{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:22px 18px 24px;
+  margin:0 0 14px;
+  scroll-margin-top:12px;
+}
+h2{
+  margin:0 0 4px;
+  font-size:14px;
+  letter-spacing:.02em;
+  color:var(--green);
+  font-weight:700;
+}
+.sec > .title{
+  margin:0 0 16px;
+  font-size:21px;
+  line-height:1.42;
+  letter-spacing:-0.025em;
+  color:var(--navy);
+  font-weight:800;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line-2);
+}
+h3{
+  margin:26px 0 10px;
+  font-size:15.5px;
+  font-weight:700;
+  color:var(--navy);
+  padding-left:10px;
+  border-left:3px solid var(--green);
+  line-height:1.5;
+}
+p{margin:0 0 12px}
+p.small{font-size:14px;color:var(--muted);line-height:1.7}
+strong{font-weight:700;color:#111820}
+em{font-style:normal;color:var(--green);font-weight:700}
+ul.bullet{margin:0 0 12px;padding:0 0 0 2px;list-style:none}
+ul.bullet li{position:relative;padding:0 0 6px 14px;font-size:15px;line-height:1.72}
+ul.bullet li::before{content:"";position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--green)}
+
+/* ---------- 요약(정의 목록) ---------- */
+dl.facts{margin:0 0 6px;padding:0}
+dl.facts .row{
+  display:grid;
+  grid-template-columns:96px 1fr;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line-2);
+}
+dl.facts .row:first-child{padding-top:2px}
+dl.facts dt{
+  margin:0;
+  font-size:13.5px;
+  font-weight:700;
+  color:var(--navy);
+  line-height:1.6;
+}
+dl.facts dd{margin:0;font-size:15px;line-height:1.7}
+
+/* ---------- 콜아웃 ---------- */
+.callout{
+  margin:16px 0;
+  padding:14px 16px;
+  border-radius:10px;
+  border-left:4px solid var(--green);
+  background:var(--green-tint);
+  font-size:14.5px;
+  line-height:1.75;
+}
+.callout.warn{border-left-color:#D99B1E;background:var(--amber-tint)}
+.callout.note{border-left-color:var(--line);background:#F5F7FA;color:var(--ink-2)}
+.callout p:last-child{margin-bottom:0}
+
+/* ---------- 상태 목록 ---------- */
+ul.status{list-style:none;margin:0;padding:0}
+ul.status li{
+  display:grid;
+  grid-template-columns:74px 1fr;
+  gap:10px;
+  align-items:start;
+  padding:11px 0;
+  border-bottom:1px solid var(--line-2);
+}
+ul.status li:last-child{border-bottom:0}
+ul.status strong{display:block;font-size:15px}
+ul.status span.desc{display:block;font-size:13.5px;color:var(--muted);line-height:1.6}
+.badge{
+  display:inline-block;
+  padding:3px 8px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  text-align:center;
+  white-space:nowrap;
+}
+.badge.ok{background:#E6F1EA;color:var(--green)}
+.badge.mid{background:#FBF0D8;color:var(--amber)}
+.badge.wait{background:#EDEFF3;color:#6B7280}
+
+/* ---------- 표 → 모바일 카드 ---------- */
+table.tbl{
+  width:100%;
+  border-collapse:collapse;
+  margin:0 0 8px;
+  font-size:14.5px;
+  line-height:1.65;
+}
+table.tbl th{
+  text-align:left;
+  font-size:13px;
+  font-weight:700;
+  color:var(--ink-2);
+  background:#F3F5F8;
+  padding:9px 10px;
+  border-bottom:1px solid var(--line);
+}
+table.tbl td{
+  padding:11px 10px;
+  border-bottom:1px solid var(--line-2);
+  vertical-align:top;
+}
+table.tbl tr:last-child td{border-bottom:0}
+table.tbl td.c{text-align:center}
+.nowrap{white-space:nowrap}
+
+@media (max-width:600px){
+  table.tbl{display:block;border:0}
+  table.tbl thead{display:none}
+  table.tbl tbody,table.tbl tr,table.tbl td{display:block;width:auto}
+  table.tbl tr{
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px 12px 12px;
+    margin:0 0 10px;
+    background:#FCFCFD;
+  }
+  table.tbl tr:last-child{margin-bottom:0}
+  table.tbl td{border:0;padding:3px 0}
+  table.tbl td.c{text-align:left}
+  table.tbl td[data-l]::before{
+    content:attr(data-l);
+    display:block;
+    font-size:11.5px;
+    letter-spacing:.02em;
+    color:var(--faint);
+    font-weight:700;
+    margin-bottom:1px;
+  }
+  table.tbl td:not([data-l]){font-weight:700;color:var(--navy);font-size:15px;margin-bottom:2px}
+}
+
+/* ---------- 카드 그리드 ---------- */
+.cards{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 6px}
+@media (min-width:601px){.cards{grid-template-columns:1fr 1fr}}
+.card{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px 15px;
+  background:#FCFCFD;
+}
+.card h4{margin:0 0 6px;font-size:14.5px;color:var(--green);font-weight:700;line-height:1.55}
+.card p{margin:0;font-size:14px;line-height:1.7;color:var(--ink-2)}
+.card p + p{margin-top:8px}
+.card-head{display:flex;align-items:flex-start;margin:0 0 6px}
+.card-head h4{margin:0;flex:1}
+.card-head .badge{margin-left:8px;flex:none;margin-top:1px}
+.cards.one{grid-template-columns:1fr}
+/* 라벨-값 두 칸 표는 모바일에서 라벨을 감춘다(행 제목이 바로 위에 있으므로) */
+@media (max-width:600px){
+  table.tbl.kv td[data-l]::before{display:none}
+}
+
+/* ---------- 흐름 ---------- */
+ol.flow{list-style:none;margin:0 0 6px;padding:0;display:grid;grid-template-columns:1fr;gap:8px;counter-reset:step}
+ol.flow li{
+  counter-increment:step;
+  position:relative;
+  background:var(--navy);
+  color:#fff;
+  border-radius:10px;
+  padding:12px 14px 12px 46px;
+  font-size:14px;
+  line-height:1.55;
+  font-weight:600;
+}
+ol.flow li::before{
+  content:counter(step);
+  position:absolute;
+  left:12px;top:50%;
+  transform:translateY(-50%);
+  width:22px;height:22px;
+  border-radius:50%;
+  background:rgba(255,255,255,.16);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+@media (min-width:601px){
+  ol.flow{grid-template-columns:repeat(5,1fr);gap:6px}
+  ol.flow li{padding:12px 10px;text-align:center;font-size:12.5px;line-height:1.5}
+  ol.flow li::before{position:static;transform:none;margin:0 auto 6px;display:flex}
+}
+
+/* ---------- 버튼 ---------- */
+.btn{
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  background:var(--navy);
+  color:#fff;
+  font-weight:700;
+  font-size:15px;
+  padding:14px 16px;
+  border-radius:12px;
+  margin:14px 0 6px;
+}
+.btn.sub{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.btn small{display:block;font-weight:500;font-size:12.5px;color:#B7C6DA;margin-top:2px}
+.btn.sub small{color:var(--muted)}
+
+/* ---------- 문서 정보 ---------- */
+.docinfo{
+  margin:18px 0 0;
+  padding:16px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  font-size:13.5px;
+  color:var(--muted);
+  line-height:1.7;
+}
+.docinfo strong{color:var(--ink-2)}
+.top-link{
+  display:inline-block;
+  margin-top:14px;
+  font-size:13.5px;
+  color:var(--navy);
+  text-decoration:none;
+  border-bottom:1px solid #C9D3E0;
+}
+
+/* ---------- 인쇄 ---------- */
+@media print{
+  body{background:#fff;font-size:11pt}
+  .hero{border-radius:0}
+  section.sec{border:0;padding:0;margin:0 0 18pt;page-break-inside:avoid}
+  .toc{display:none}
+  a.btn{border:1px solid #999;color:#000;background:#fff}
+}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <p class="kicker">서비스 기획서 · 2026.11.15</p>
+    <h1>기념일 챙김 <span class="soft">(가칭)</span></h1>
+    <p class="lede">기념일과 하고 싶은 말을 미리 적어 두고, 선물까지 미리 골라 두면 때가 되어 그 선물과 메시지를 함께 알려 주는 앱</p>
+    <ul class="chips">
+      <li>음력 매년 자동 반복</li>
+      <li>D-7 알림</li>
+      <li>카톡 선물하기 연결</li>
+    </ul>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <nav class="toc" aria-label="목차">
+    <details open>
+      <summary>목차</summary>
+      <ol>
+        <li><a href="#summary"><span class="n">0</span>한 장 요약</a></li>
+        <li><a href="#design"><span class="n">1</span>핵심 설계 — 고민은 미리, 결정은 알림에서, 손은 한 번</a></li>
+        <li><a href="#market"><span class="n">2</span>문제와 경쟁</a></li>
+        <li><a href="#policy"><span class="n">3</span>플랫폼 제약과 정책 조사</a></li>
+        <li><a href="#features"><span class="n">4</span>핵심 기능과 사용자 흐름</a></li>
+        <li><a href="#money"><span class="n">5</span>선물 큐레이션과 수익</a></li>
+        <li><a href="#build"><span class="n">6</span>프로토타입 현황</a></li>
+        <li><a href="#next"><span class="n">7</span>출시까지 남은 일</a></li>
+        <li><a href="#stack"><span class="n">8</span>기술 스택과 일정</a></li>
+        <li><a href="#risk"><span class="n">9</span>위험과 대응</a></li>
+        <li><a href="#todo"><span class="n">10</span>다음 단계</a></li>
+      </ol>
+    </details>
+  </nav>
+
+  <!-- ================= 0 한 장 요약 ================= -->
+  <section class="sec" id="summary">
+    <h2>0</h2>
+    <p class="title">한 장 요약</p>
+
+    <dl class="facts">
+      <div class="row">
+        <dt>한 줄 설명</dt>
+        <dd>기념일(음력 포함)과 하고 싶은 말을 미리 등록하고 <strong>선물도 미리 골라 두면</strong>, 일주일 전에 그 선물을 1순위로, 품절에 대비한 대체 2개와 함께 알려 주고 카톡 선물하기로 바로 연결해 주는 앱</dd>
+      </div>
+      <div class="row">
+        <dt>채우는 욕구</dt>
+        <dd>소중한 사람을 챙기고 싶지만 까먹을까 불안한 마음, 선물을 고민할 시간이 없는 마음</dd>
+      </div>
+      <div class="row">
+        <dt>대상</dt>
+        <dd>부모님, 연인, 친구, 직장 사람의 기념일을 챙겨야 하는 20~40대</dd>
+      </div>
+      <div class="row">
+        <dt>차별점</dt>
+        <dd>미리 골라 둔 선물을 D-7에 그대로 1순위로 제시, 선물하기 이동 시 메시지 자동 복사, 음력 매년 자동 반복</dd>
+      </div>
+      <div class="row">
+        <dt>수익</dt>
+        <dd>카카오톡 선물하기 <strong>큐레이터</strong> 추천 링크로 일어난 구매의 수수료 (12월까지 총 9% 프로모션, 이후 미공개)</dd>
+      </div>
+      <div class="row">
+        <dt>핵심 설계</dt>
+        <dd>완전 자동 발송 대신 <strong>“알림 → 선택 → 한 번 탭”</strong>. 결제와 전송은 사용자가 카카오 선물하기에서 직접 한다.</dd>
+      </div>
+      <div class="row">
+        <dt>가장 큰 위험</dt>
+        <dd>카카오 정책 의존(자체 기능 확대 시 경쟁), 1월 이후 수수료율 미공개</dd>
+      </div>
+    </dl>
+
+    <div class="callout">
+      기념일을 놓치지 않게 해 주는 앱은 이미 많습니다. 이 서비스가 다른 점은 <strong>미리 골라 둔 선물과 미리 적어 둔 메시지를 때에 맞춰 그대로 꺼내 준다</strong>는 것입니다. 고민은 등록할 때로 옮기고, 알림에서는 확인만 하게 하고, 카톡에서의 입력은 붙여넣기 한 번으로 줄였습니다.
+    </div>
+
+    <h3>지금 상태</h3>
+    <ul class="status">
+      <li><span class="badge ok">완료</span><div><strong>정책·경쟁 조사</strong><span class="desc">설계에 필요한 4가지 정책 질문 확인 (3장)</span></div></li>
+      <li><span class="badge ok">완료</span><div><strong>앱 프로토타입</strong><span class="desc">4개 화면, 음력 변환, 선물 매칭, 데이터 구조 설계</span></div></li>
+      <li><span class="badge ok">공개 가능</span><div><strong>웹 버전</strong><span class="desc">설치 없이 링크로 열리는 단일 HTML 앱</span></div></li>
+      <li><span class="badge mid">준비 중</span><div><strong>카카오 연동</strong><span class="desc">개발자 앱 등록, 상품별 추천 링크 연결</span></div></li>
+      <li><span class="badge mid">준비 중</span><div><strong>서버·알림</strong><span class="desc">데이터베이스 설계 완료, 연결과 푸시 발송 예정</span></div></li>
+      <li><span class="badge wait">예정</span><div><strong>사용자 검증</strong><span class="desc">지인 20명 인터뷰, 베타 테스트</span></div></li>
+    </ul>
+  </section>
+
+  <!-- ================= 1 핵심 설계 ================= -->
+  <section class="sec" id="design">
+    <h2>1</h2>
+    <p class="title">핵심 설계 — 고민은 미리, 결정은 알림에서, 손은 한 번</p>
+
+    <p class="small">기획의 출발점은 하나입니다. 기념일을 놓치는 사람은 <strong>날짜를 몰라서가 아니라, 그날 선물을 고를 시간이 없어서</strong> 놓칩니다. 그래서 고민을 D-7이 아니라 등록 시점으로 옮겼습니다. 사용자는 기념일을 등록할 때 선물을 미리 찜해 두고, 알림이 오는 날에는 이미 정해 둔 선물을 확인만 하면 됩니다.</p>
+
+    <table class="tbl">
+      <thead><tr><th style="width:22%">항목</th><th style="width:38%">설계</th><th style="width:40%">그렇게 정한 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>선물</strong></td>
+          <td data-l="설계"><strong>미리 찜한 선물 1순위</strong> + 품절 대비 대체 후보 2개</td>
+          <td data-l="이유">D-7에 고민할 필요를 없앤다. 알림이 “결정”이 아니라 “확인”이 된다.</td>
+        </tr>
+        <tr>
+          <td><strong>메시지</strong></td>
+          <td data-l="설계"><strong>선물하기 이동 버튼을 누르면 메시지가 클립보드에 자동 복사</strong> → 붙여넣기 한 번으로 전송</td>
+          <td data-l="이유">선물하기가 외부 URL로 메시지·받는 사람을 채워 주지 않아, 손이 가장 많이 가는 입력을 줄인다.</td>
+        </tr>
+        <tr>
+          <td><strong>알림 수단</strong></td>
+          <td data-l="설계">주 알림은 <strong>앱 푸시</strong>, 카톡 ‘나에게 보내기’는 <strong>보조 저장·알림</strong></td>
+          <td data-l="이유">나에게 보내기는 권한 장벽이 낮지만, 알림의 신뢰성은 푸시가 높다.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>① 미리 선물 골라 두기 — 1순위 핵심 흐름</h3>
+    <p>기념일을 등록할 때 관계·예산·취향 태그로 후보를 보여 주고, 그 자리에서 <strong>선물을 하나 찜해 둡니다</strong>. D-7 알림 화면은 찜한 선물을 가장 크게 1순위로 띄우고, <strong>품절·가격 변동에 대비한 대체 후보 2개만</strong> 함께 보여 줍니다. 후보를 다시 3개 나열하지 않는 이유는, 선택지가 늘어날수록 다시 고민하게 되기 때문입니다. 찜한 선물이 없으면 후보 3개로 자연스럽게 이어집니다.</p>
+
+    <h3>② 메시지 자동 복사 — 붙여넣기 한 번이면 끝</h3>
+    <p>카카오 선물하기 페이지는 외부 URL로 <strong>메시지와 받는 사람을 미리 채워 넣는 기능을 지원하지 않고</strong>, 다른 앱이 입력창에 글자를 대신 넣는 것도 OS 보안상 불가능합니다. 그래서 <strong>“선물하기로 이동” 버튼을 누르는 순간 미리 적은 메시지를 클립보드에 넣고</strong>, “메시지를 복사했어요! 선물하기 화면에서 붙여넣기만 하세요”라고 알려 줍니다. 복사가 막히는 뷰어에서는 직접 복사할 수 있는 창을 띄우고, 링크 이동은 막지 않습니다. 메시지가 비어 있으면 복사하지 않습니다.</p>
+
+    <h3>③ 카카오톡 ‘나에게 보내기’ 보조 연동 + 앱 푸시 주 알림</h3>
+    <p>친구에게 보내기는 상대방까지 카카오 로그인으로 가입·동의해야 해 장벽이 높습니다. 반면 <strong>‘나에게 보내기’는 본인 동의만으로 동작</strong>하므로, 내 폰 카톡에 알림·메모를 남기는 <strong>보조 수단</strong>으로 붙입니다. D-7 주 알림은 <strong>앱 푸시</strong>로 보내 알림 누락 위험을 줄입니다. 실제 전송에는 카카오 개발자 앱 등록과 서버에서의 토큰 교환이 필요합니다.</p>
+
+    <div class="callout">한 줄 정리 — <strong>“고민은 미리, 결정은 알림에서, 손은 한 번”</strong>. 고민을 D-7에서 등록 시점으로 옮기고, 알림에서는 확인만 하게 하고, 카톡에서의 입력을 붙여넣기 한 번으로 줄였습니다.</div>
+  </section>
+
+  <!-- ================= 2 문제와 경쟁 ================= -->
+  <section class="sec" id="market">
+    <h2>2</h2>
+    <p class="title">문제와 경쟁</p>
+
+    <table class="tbl">
+      <thead><tr><th style="width:24%">구분</th><th style="width:38%">이미 있는 것</th><th style="width:38%">이 앱의 차이</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>기념일·음력 알림</strong></td>
+          <td data-l="이미 있는 것">음력 지원 디데이 카운터, 음력지킴이, 깜빡 등 다수 — 구글 플레이·앱스토어</td>
+          <td data-l="차이">알림에서 끝나지 않고 <strong>미리 고른 선물과 미리 적은 메시지까지</strong> 연결한다.</td>
+        </tr>
+        <tr>
+          <td><strong>AI 선물 추천</strong></td>
+          <td data-l="이미 있는 것">Aril AI, 기념일 AI 비서, 기념일 비서 등</td>
+          <td data-l="차이">추천에서 끝나지 않고 <strong>하고 싶은 말을 미리 적어 둔 것</strong>을 때에 맞춰 꺼내 쓴다.</td>
+        </tr>
+        <tr>
+          <td><strong>카카오 자체 기능</strong></td>
+          <td data-l="이미 있는 것">선물하기 for Biz 기념일 예약 선물(기업용), 카톡 ‘특별한 친구’(시범 운영 중)</td>
+          <td data-l="차이">없음. 카카오가 이 기능을 개인용으로 확대하면 <strong>가장 큰 경쟁자</strong>가 된다.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>경쟁 앱의 스토어 현황 (2026.11.14 확인)</h3>
+    <table class="tbl">
+      <thead><tr><th style="width:26%">앱</th><th style="width:32%">스토어</th><th style="width:42%">비고</th></tr></thead>
+      <tbody>
+        <tr><td><strong>음력지킴이</strong></td><td data-l="스토어">앱스토어 · 구글 플레이</td><td data-l="비고">음력·기념일 알림 중심</td></tr>
+        <tr><td><strong>Aril AI</strong></td><td data-l="스토어">앱스토어 · 구글 플레이</td><td data-l="비고">AI 선물 추천 중심</td></tr>
+        <tr><td><strong>기념일 비서</strong></td><td data-l="스토어">구글 플레이</td><td data-l="비고">기념일 관리</td></tr>
+        <tr><td><strong>깜빡</strong></td><td data-l="스토어">앱스토어 (iOS 전용)</td><td data-l="비고">음력·윤달, D-7 맞춤 선물, 기일 제외까지 컨셉이 가장 겹침. <strong>안드로이드 버전이 없다.</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">확인된 것 — 선물하기 큐레이터는 2026년 10월 13일부터 제공되고, 추천 링크로 구매가 일어나면 수수료를 받습니다. 12월까지는 <strong>총 9% 프로모션</strong>입니다. (상세는 3장)</div>
+
+    <div class="callout warn">
+      <p><strong>구조적 제약 — 카톡 친구를 미리 지정해 바로 보낼 수 없는 이유</strong></p>
+      <p>① 선물하기 링크가 <strong>받는 사람 지정 파라미터를 지원하지 않는다.</strong> 받는 사람 선택은 선물하기 화면 안에서 직접 해야 한다.</p>
+      <p>② 앱에서 카톡 친구 목록을 부르려면 <strong>상대방(부모님·친구)까지 카카오 로그인으로 가입하고 동의</strong>해야 목록에 뜬다. 친구 API는 비즈 앱 전환과 검수도 필요하다.</p>
+      <p>→ 지금 정책에서 가장 짧은 동선은 <strong>“앱에서 메시지 자동 복사 → 추천 상품 링크로 직행 → 카톡에서 사람만 선택 후 붙여넣기”</strong>다. 이 3단계를 2단계로 줄이는 것이 다음 과제다.</p>
+    </div>
+  </section>
+
+  <!-- ================= 3 플랫폼 제약 ================= -->
+  <section class="sec" id="policy">
+    <h2>3</h2>
+    <p class="title">플랫폼 제약과 정책 조사</p>
+
+    <p class="small">설계 전에 반드시 확인해야 했던 네 가지 질문입니다. 2026.11.14 카카오 developers 정책 문서, 선물하기 큐레이터 안내, 각 앱 스토어를 직접 확인해 결론을 확정하고 설계에 반영했습니다.</p>
+
+    <div class="cards one">
+      <div class="card">
+        <div class="card-head"><h4>① 서버 자동 발송</h4><span class="badge" style="background:#F8E7E4;color:#B03A2E">불가</span></div>
+        <p>카카오톡 메시지 API는 <strong>보내는 사람과 받는 사람</strong>이 모두 카카오 로그인으로 가입하고, 친구 관계이며, 동의해야만 보낼 수 있다. 서버가 일방적으로 보내는 자동 발송은 <strong>유료 알림톡 영역</strong>이고 개인 앱에서는 쓸 수 없다.</p>
+        <p>→ 자동 발송을 빼고 <strong>“알림 → 선택 → 한 번 탭”</strong> 구조로 확정. 앱은 알림·복사·이동까지만 한다.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><h4>② 선물하기 외부 주문 연동</h4><span class="badge" style="background:#F8E7E4;color:#B03A2E">불가</span></div>
+        <p>카카오쇼핑 Open API는 <strong>입점 판매자와 연동 대행사</strong>용이다. 일반 외부 앱이 상품 목록을 받아 오거나 주문을 대신 넣을 수 없다.</p>
+        <p>→ 상품 목록은 <strong>직접 고른 24개 카탈로그</strong>로 운영하고, 결제·배송은 선물하기 화면에서 사용자가 직접 한다.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><h4>③ 큐레이터 수수료율</h4><span class="badge mid">부분 확인</span></div>
+        <p>2026.10.13 출시. <strong>12월까지 총 9% 프로모션</strong>(판매자 부담 3%, 예산 소진 시 변동). <strong>24시간 안에 구매를 결정해야</strong> 수수료가 인정되고, 교환권·기프티콘, 직매입 상품, 미성년자에게 판매할 수 없는 상품은 제외. <strong>1월 이후 기본 수수료율은 공개되지 않았다.</strong></p>
+        <p>→ 손익은 <strong>3% 보수 시나리오</strong>를 기준으로 유지(5장). 12월 프로모션은 상방으로만 계산한다.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><h4>④ 경쟁 앱 스토어</h4><span class="badge ok">확인</span></div>
+        <p>음력지킴이·Aril AI는 양대 스토어, 기념일 비서는 구글 플레이, <strong>깜빡은 iOS 전용</strong>(음력·윤달·D-7 맞춤 선물·기일 제외까지 컨셉이 유사하지만 안드로이드 버전이 없음).</p>
+        <p>→ <strong>안드로이드 1차 출시</strong>로 깜빡과 정면 충돌을 피하고, 안드로이드 사용자를 먼저 확보한다.</p>
+      </div>
+    </div>
+
+    <h3>수수료 조건 정리 (12월 프로모션)</h3>
+    <table class="tbl kv">
+      <thead><tr><th style="width:24%">조건</th><th style="width:76%">내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>기간</strong></td><td data-l="내용">2026.10.13 출시 ~ 12월말 프로모션 (예산 소진 시 변동)</td></tr>
+        <tr><td><strong>요율</strong></td><td data-l="내용">총 <strong>9%</strong> (이 중 <strong>판매자 부담 3%</strong>) / 1월 이후 기본 요율 <strong>미공개</strong></td></tr>
+        <tr><td><strong>인정 조건</strong></td><td data-l="내용">추천 링크로 유입된 사용자가 <strong>24시간 안에 구매를 결정</strong>해야 수수료 인정</td></tr>
+        <tr><td><strong>제외 상품</strong></td><td data-l="내용">교환권·기프티콘, 직매입 상품, 미성년자에게 판매할 수 없는 상품</td></tr>
+        <tr><td><strong>표시 의무</strong></td><td data-l="내용">추천(제휴) 링크임을 화면에 밝혀야 함 → 앱의 모든 선물 카드에 <strong>“제휴 링크” 배지</strong> 표시</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout note">조사 출처: 카카오 developers 정책·메시지 API 문서, 카카오톡 선물하기 큐레이터 안내, 카카오쇼핑 Open API 안내, 구글 플레이·앱스토어 앱 정보. 정책과 수수료는 예고 없이 바뀔 수 있어, 1월 이후 요율이 공개되면 이 문서의 손익 표를 다시 계산해야 합니다.</div>
+  </section>
+
+  <!-- ================= 4 핵심 기능 ================= -->
+  <section class="sec" id="features">
+    <h2>4</h2>
+    <p class="title">핵심 기능과 사용자 흐름</p>
+
+    <div class="cards">
+      <div class="card">
+        <h4>① 기념일 등록 · 음력 자동 반복</h4>
+        <p>사람, 관계, 날짜를 등록합니다. 음력과 양력을 지원하고 음력은 <strong>매년 양력으로 자동 변환</strong>합니다. 윤달, 그해에 없는 음력 30일, 연도 경계까지 보정합니다.</p>
+      </div>
+      <div class="card">
+        <h4>② 선물 미리 골라 두기 (1순위)</h4>
+        <p>관계·예산·취향 태그로 후보를 보여 주고 그 자리에서 하나를 <strong>찜</strong>해 둡니다. 지난 선물 기록은 다시 추천하지 않습니다.</p>
+      </div>
+      <div class="card">
+        <h4>③ D-7 알림 · 메시지 미리 적기</h4>
+        <p>일주일 전에 <strong>찜한 선물 1순위 + 대체 후보 2개</strong>와 미리 적어 둔 메시지를 함께 보여 줍니다. 기일·제사는 선물 후보를 만들지 않고 조용한 문안만 보여 줍니다.</p>
+      </div>
+      <div class="card">
+        <h4>④ 카톡 선물하기로 이동</h4>
+        <p>버튼을 누르면 <strong>메시지가 클립보드에 자동 복사</strong>되고 선물하기 상품 페이지가 열립니다. 받는 사람 선택·결제·전송은 사용자가 카카오 선물하기에서 직접 합니다.</p>
+      </div>
+    </div>
+
+    <h3>사용 흐름</h3>
+    <ol class="flow">
+      <li>기념일 등록<br>+ 선물 미리 찜<br>+ 메시지 미리 적기</li>
+      <li>D-7 알림<br>(앱 푸시)</li>
+      <li>찜한 선물 1순위<br>+ 대체 2개<br>+ 메시지</li>
+      <li>이동 시<br>메시지 자동 복사</li>
+      <li>카톡 선물하기<br>붙여넣기·결제</li>
+    </ol>
+
+    <h3>화면 구성</h3>
+    <ul class="bullet">
+      <li><strong>홈</strong> — 다가오는 기념일 목록, 남은 일수, 음력/양력 표기</li>
+      <li><strong>기념일 등록·상세</strong> — 사람 정보, 취향 메모, 미리 적은 말, 다음 3회 날짜, <strong>미리 고른 선물 관리</strong>, 지난 선물 기록</li>
+      <li><strong>알림 화면</strong> — 찜한 선물 1순위 + 대체 2개 + 추천 이유, <strong>메시지 복사</strong> · <strong>선물 바로 보내기</strong> · 카톡 ‘나에게 보내기’(보조)</li>
+      <li><strong>설정</strong> — 기본 알림 시점, 기본 예산, 카카오 연동, 개인정보·계정 삭제</li>
+    </ul>
+
+    <h3>MVP에서 하지 않는 것</h3>
+    <ul class="bullet">
+      <li><strong>자동 결제와 자동 발송</strong> — 정책상 불가이고, 잘못된 선물이 나가는 사고를 막습니다.</li>
+      <li><strong>상대방 연락처 수집</strong> — 이름과 관계만 저장하고 전화번호·이메일·주소는 받지 않습니다.</li>
+      <li><strong>상품 목록 자동 수집</strong> — 카카오쇼핑 Open API를 쓸 수 없어 직접 고른 카탈로그로 운영합니다.</li>
+    </ul>
+  </section>
+
+  <!-- ================= 5 수익 ================= -->
+  <section class="sec" id="money">
+    <h2>5</h2>
+    <p class="title">선물 큐레이션과 수익</p>
+
+    <h3>선물 후보를 만드는 방식</h3>
+    <ul class="bullet">
+      <li><strong>미리 고르기</strong> — 관계(부모님·연인·친구·직장)와 예산대(3만원 이하·3~8만원·8만원 이상)별로 2개 이상씩, 총 <strong>24개</strong> 카탈로그를 직접 골라 둡니다. 사용자는 등록할 때 이 중 하나를 찜합니다.</li>
+      <li><strong>알림에서의 제시</strong> — 찜한 선물 <strong>1순위</strong> + <strong>대체 후보 2개</strong>(품절·가격 변동 대비). 찜한 선물이 없을 때만 후보 3개를 보여 줍니다.</li>
+      <li><strong>매칭 규칙</strong> — 예산 이내 우선 → 취향 태그 일치 → 예산 근접 → 결정적 정렬. 같은 입력이면 항상 같은 후보와 같은 순서가 나옵니다. 기일·제사는 후보를 만들지 않습니다.</li>
+      <li><strong>표시</strong> — 모든 선물에 <strong>제휴 링크 배지</strong>와 고지 문구를 붙입니다. 링크는 카카오 선물하기 상품 페이지로 열립니다.</li>
+    </ul>
+
+    <h3>수익 모델</h3>
+    <p>수익은 추천 링크로 일어난 구매의 수수료입니다. 월 구독을 받기에는 어려움이 있습니다 — 연 몇 번 쓰는 서비스이고 무료 기념일 앱이 많기 때문입니다. 아래는 한 사람이 1년에 5건, 건당 5만 원을 산다고 가정한 사용자당 연 수익입니다. 수수료율은 프로모션 9%와, 이후를 알 수 없어 3%·5%로 가정했습니다.</p>
+
+    <table class="tbl">
+      <thead><tr><th style="width:32%">수수료율</th><th class="c" style="width:22%">전환 100%</th><th class="c" style="width:22%">전환 50%</th><th class="c" style="width:24%">1만 명, 전환 50%</th></tr></thead>
+      <tbody>
+        <tr><td><span style="color:#8B9199"><strong>3% (보수)</strong></span></td><td class="c" data-l="전환 100%">7,500원</td><td class="c" data-l="전환 50%">3,750원</td><td class="c" data-l="1만 명, 전환 50%">약 3,750만 원</td></tr>
+        <tr><td><strong>5%</strong></td><td class="c" data-l="전환 100%">12,500원</td><td class="c" data-l="전환 50%">6,250원</td><td class="c" data-l="1만 명, 전환 50%">약 6,250만 원</td></tr>
+        <tr><td><strong>9% (12월 프로모션)</strong></td><td class="c" data-l="전환 100%">22,500원</td><td class="c" data-l="전환 50%">11,250원</td><td class="c" data-l="1만 명, 전환 50%">약 1.1억 원</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">해석 — 활성 사용자 1만 명을 모아도 연 수익은 수천만~1억 원 수준입니다. 수수료율이 내려가면 더 줄어듭니다. 부업이나 포트폴리오로는 의미가 있지만, 큰 사업이 되려면 사용자 수가 훨씬 커져야 합니다. 위 숫자는 모두 가정입니다. <strong>1월 이후 기본 수수료율이 공개되지 않았으므로 손익 판단은 3% 보수 시나리오</strong>로 합니다.</div>
+
+    <h3>보조 지표와 2차 수익 (미정)</h3>
+    <p>2차로 검토할 수익은 가족 공유, 기념일 수 확대, 프리미엄 취향 분석 같은 기능입니다. 사용자 반응을 본 뒤 결정합니다. 당장은 <strong>“D-7 알림에서 선물하기로 이동한 비율”</strong>과 <strong>“복사한 메시지를 실제로 붙여넣어 전송한 비율”</strong>을 핵심 지표로 봅니다.</p>
+  </section>
+
+  <!-- ================= 6 프로토타입 ================= -->
+  <section class="sec" id="build">
+    <h2>6</h2>
+    <p class="title">프로토타입 현황</p>
+
+    <p class="small">기획서만 있는 상태가 아닙니다. 아래는 <strong>실제로 만들어져 동작하는 범위</strong>입니다. 2026.11.14 기준.</p>
+
+    <table class="tbl kv">
+      <thead><tr><th style="width:28%">항목</th><th style="width:72%">내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>앱 프로토타입</strong></td><td data-l="내용">React Native(Expo) 기반 4개 화면(홈 · 등록/상세 · 알림 · 설정). 앱 푸시를 주 알림으로 두기 위해 웹이 아닌 앱을 기본으로 선택</td></tr>
+        <tr><td><strong>음력 → 양력 변환</strong></td><td data-l="내용"><strong>1890~2050</strong> 지원. 윤달, 그해에 없는 음력 30일(그 달 마지막 날로 보정), 음력 12월→다음 해 1~2월, 양력 2월 29일 처리까지 검증. 지원 범위 밖은 조용히 틀린 날짜를 만들지 않고 비웁니다.</td></tr>
+        <tr><td><strong>선물 카탈로그 · 매칭</strong></td><td data-l="내용"><strong>기일과 제사는 선물 후보에서 제외</strong>합니다. 관계 4 × 예산대 3 × 2개 이상 = <strong>24개</strong>, 규칙 매칭, 결정적 정렬, 지난 선물 제외까지 규칙으로 고정했습니다.</td></tr>
+        <tr><td><strong>데이터 구조</strong></td><td data-l="내용">테이블 7개(사용자, 기념일, 발생일, 선물 이력, 큐레이터 선물, 알림 로그, 기기), 행 단위 접근 제어, D-7 조회·알림 예약 함수, <strong>연락처처럼 보이는 값의 저장을 거부하는 트리거</strong> 포함</td></tr>
+        <tr><td><strong>메시지 자동 복사</strong></td><td data-l="내용">선물하기 이동 버튼을 누르면 메시지가 클립보드에 복사되고 안내가 뜹니다. 앱과 웹 모두에서 동작하며, 복사가 막혀도 링크 이동은 유지.</td></tr>
+        <tr><td><strong>웹 버전</strong></td><td data-l="내용">파일 하나(외부 CDN 없음)로 휴대폰에서 바로 열립니다. 앱과 같은 화면·로직·선물 데이터, 기기 저장, 연락처 저장 차단.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>검증 결과</h3>
+    <table class="tbl">
+      <thead><tr><th style="width:36%">검증</th><th style="width:24%">결과</th><th style="width:40%">범위</th></tr></thead>
+      <tbody>
+        <tr><td><strong>응용 프로그램 단위 테스트</strong></td><td data-l="결과"><span class="badge ok">전 항목 통과</span></td><td data-l="범위">음력 변환 · 선물 매칭 · 알림 구성 · 개인정보 · 날짜 계산</td></tr>
+        <tr><td><strong>타입 검사</strong></td><td data-l="결과"><span class="badge ok">오류 0</span></td><td data-l="범위">TypeScript 전체</td></tr>
+        <tr><td><strong>안드로이드 빌드</strong></td><td data-l="결과"><span class="badge ok">성공</span></td><td data-l="범위">배포용 번들 생성</td></tr>
+        <tr><td><strong>웹 로직·화면 검사</strong></td><td data-l="결과"><span class="badge ok">전 항목 통과</span></td><td data-l="범위">단일 파일 여부, 화면 전환, 복사 동작</td></tr>
+        <tr><td><strong>데이터베이스 스키마</strong></td><td data-l="결과"><span class="badge ok">오류 0</span></td><td data-l="범위">PostgreSQL 문법 검사</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ================= 7 남은 일 ================= -->
+  <section class="sec" id="next">
+    <h2>7</h2>
+    <p class="title">출시까지 남은 일</p>
+
+    <p class="small">아직 연결하지 못한 것들입니다. 대부분 코드가 아니라 <strong>심사·계정·연결</strong>의 성격이라, 순서를 정해 두고 하나씩 닫습니다.</p>
+
+    <table class="tbl">
+      <thead><tr><th style="width:30%">항목</th><th style="width:20%">현재</th><th style="width:50%">필요한 일</th></tr></thead>
+      <tbody>
+        <tr><td><strong>카카오 개발자 앱</strong></td><td data-l="현재"><span class="badge wait">미등록</span></td><td data-l="필요한 일">앱 등록 → 카카오 로그인 + <strong>메시지 전송(talk_message) 동의항목</strong> 신청 → 키 발급. 서버에서의 토큰 교환 준비</td></tr>
+        <tr><td><strong>상품별 추천 링크</strong></td><td data-l="현재"><span class="badge mid">임시</span></td><td data-l="필요한 일">현재 링크는 선물하기 <strong>검색 결과</strong>로 연결됩니다(수수료 대상 아님). 큐레이터 <strong>상품별 추천 링크로 교체</strong> 필요</td></tr>
+        <tr><td><strong>서버 연결</strong></td><td data-l="현재"><span class="badge mid">설계 완료</span></td><td data-l="필요한 일">프로젝트 생성 → 스키마 적용 → 앱 키 연결 → 실제 저장·조회 검증</td></tr>
+        <tr><td><strong>푸시 발송</strong></td><td data-l="현재"><span class="badge wait">미연결</span></td><td data-l="필요한 일">기기 토큰 저장, 예약 작업에서 D-7 알림 발송, 실제 수신 확인</td></tr>
+        <tr><td><strong>기기·인앱 브라우저 확인</strong></td><td data-l="현재"><span class="badge wait">예정</span></td><td data-l="필요한 일">실제 안드로이드 기기에서 화면·터치, 카톡 인앱 브라우저에서 클립보드 동작 확인</td></tr>
+        <tr><td><strong>사용자 20명 인터뷰</strong></td><td data-l="현재"><span class="badge wait">예정</span></td><td data-l="필요한 일">최근 1년 기념일을 놓친 경험, 선물 구매 횟수·금액, 지금 쓰는 방법(캘린더·카톡 알림) 확인</td></tr>
+      </tbody>
+    </table>
+
+    <h3>프로토타입 체험</h3>
+    <p>스토어 등록 전에도 <strong>웹 버전</strong>으로 같은 화면과 흐름을 확인할 수 있습니다. 설치도, 서버도 필요 없습니다. 링크를 열면 바로 홈 화면이 뜹니다.</p>
+    <ul class="bullet">
+      <li>알림 화면 → <strong>고른 선물 바로 보내기</strong> → 카카오 선물하기에서 열기 → <strong>메시지 붙여넣기</strong>까지가 이 서비스의 핵심 동선입니다.</li>
+      <li>현재는 상품별 추천 링크가 아니라 <strong>검색 결과</strong>로 연결됩니다. 선물하기 안에서 상품을 눌러 상세로 들어간 뒤 진행해 주세요. 정식 오픈 시에는 상품 상세로 바로 열립니다.</li>
+      <li>인앱 브라우저에서는 클립보드가 막힐 수 있습니다. 그때는 안내에 따라 직접 복사하거나 <strong>Chrome</strong>에서 열어 주세요.</li>
+    </ul>
+
+    <a class="btn" href="./anniversary-care-web.html">웹 버전 열어 보기<small>설치 없이 휴대폰에서 바로 실행</small></a>
+
+    <div class="callout note">지금 상태로도 <strong>지인 테스트는 바로 가능</strong>합니다(웹 버전). 다만 <strong>수익이 잡히려면 상품 링크와 서버 연결</strong>이 먼저 필요하고, <strong>알림을 실제로 받아 보려면 카카오 개발자 앱과 푸시 발송</strong>이 필요합니다.</div>
+  </section>
+
+  <!-- ================= 8 스택·일정 ================= -->
+  <section class="sec" id="stack">
+    <h2>8</h2>
+    <p class="title">기술 스택과 일정</p>
+
+    <h3>기술 스택</h3>
+    <table class="tbl">
+      <thead><tr><th style="width:22%">영역</th><th style="width:34%">선택</th><th style="width:44%">이유 · 상태</th></tr></thead>
+      <tbody>
+        <tr><td><strong>앱</strong></td><td data-l="선택">Expo (React Native + TypeScript)</td><td data-l="이유 · 상태">푸시 알림이 핵심이라 웹보다 앱이 안정적. <strong>프로토타입 완성</strong></td></tr>
+        <tr><td><strong>백엔드·DB</strong></td><td data-l="선택">Supabase (PostgreSQL)</td><td data-l="이유 · 상태">기념일, 메시지, 취향 메모, 선물 이력. <strong>설계 완료 · 연결 예정</strong></td></tr>
+        <tr><td><strong>알림</strong></td><td data-l="선택">예약 작업 → D-7 생성 → 앱 푸시</td><td data-l="이유 · 상태">주 알림은 푸시. <strong>설계 완료 · 발송 미연결</strong></td></tr>
+        <tr><td><strong>음력 변환</strong></td><td data-l="선택">korean-lunar-calendar (MIT)</td><td data-l="이유 · 상태">1890~2050, 윤달·연도 경계 검증 완료. <strong>확정</strong></td></tr>
+        <tr><td><strong>AI</strong></td><td data-l="선택">지금은 규칙 기반 문안 조립 → 이후 Claude API</td><td data-l="이유 · 상태">메시지 초안과 추천 이유만 생성하도록 제한. <strong>도입 예정</strong></td></tr>
+        <tr><td><strong>카카오 연동</strong></td><td data-l="선택">선물하기 추천 링크 + ‘나에게 보내기’(보조)</td><td data-l="이유 · 상태">자동 발송·주문 연동은 정책상 불가. <strong>링크·전송 준비 중</strong></td></tr>
+        <tr><td><strong>웹 버전</strong></td><td data-l="선택">파일 하나짜리 HTML</td><td data-l="이유 · 상태">스토어 없이 바로 보여 주기 위한 검증용. <strong>동작</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h3>일정 (4주 MVP)</h3>
+    <table class="tbl">
+      <thead><tr><th style="width:16%">기간</th><th style="width:40%">작업</th><th style="width:22%">산출물</th><th style="width:22%">상태</th></tr></thead>
+      <tbody>
+        <tr><td><strong>사전</strong></td><td data-l="작업">카카오 정책 확인, 주변 인터뷰 20명</td><td data-l="산출물">진행 여부 판단</td><td data-l="상태"><span class="badge mid">정책 완료 · 인터뷰 진행 중</span></td></tr>
+        <tr><td><strong>1주</strong></td><td data-l="작업">기념일 등록, 음력 변환, 반복 로직</td><td data-l="산출물">기념일 관리 화면</td><td data-l="상태"><span class="badge ok">완료</span></td></tr>
+        <tr><td><strong>2주</strong></td><td data-l="작업">메시지 저장, 선물 카탈로그와 매칭, 미리 고르기</td><td data-l="산출물">알림 화면</td><td data-l="상태"><span class="badge ok">완료</span></td></tr>
+        <tr><td><strong>3주</strong></td><td data-l="작업">푸시 알림, 선물하기 이동 + 자동 복사, 서버 연결</td><td data-l="산출물">알림 흐름 완성</td><td data-l="상태"><span class="badge mid">이동·복사 완료 · 푸시·서버 진행 중</span></td></tr>
+        <tr><td><strong>4주</strong></td><td data-l="작업">지인 테스트, 스토어 등록 준비</td><td data-l="산출물">베타 배포</td><td data-l="상태"><span class="badge wait">예정</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout note">프로토타입을 먼저 만들어 두어 1~2주차 작업은 이미 끝난 상태입니다. 남은 일정의 실제 병목은 코드가 아니라 <strong>카카오 심사, 서버 연결, 기기 확인, 사용자 검증</strong>입니다.</div>
+  </section>
+
+  <!-- ================= 9 위험 ================= -->
+  <section class="sec" id="risk">
+    <h2>9</h2>
+    <p class="title">위험과 대응</p>
+
+    <table class="tbl kv">
+      <thead><tr><th style="width:38%">위험</th><th style="width:62%">대응</th></tr></thead>
+      <tbody>
+        <tr><td><strong>카카오 정책 변경 · 자체 기능 출시</strong></td><td data-l="대응">선물하기 외 선택지(다른 쇼핑몰 링크)를 열어 두고, 알림·메시지 기능만으로도 쓸 수 있게 설계. 자동 발송을 전제로 만들지 않는다.</td></tr>
+        <tr><td><strong>1월 이후 수수료율 하락</strong></td><td data-l="대응">손익은 <strong>3% 기준</strong>으로 점검하고 고정비를 최소화(서버는 무료~소액 구간). 9%는 상방으로만 계산.</td></tr>
+        <tr><td><strong>24시간 내 구매 조건</strong></td><td data-l="대응">알림에서 <strong>한 번 탭으로 결제 화면까지</strong> 가는 동선을 유지하고, D-3·D-1 재알림 옵션을 둔다.</td></tr>
+        <tr><td><strong>낮은 사용 빈도</strong></td><td data-l="대응">부모님 결혼기념일, 제사 같은 반복 기념일로 범위를 넓혀 연중 사용 접점 확보. 선물 이력으로 다음 해 추천을 이어 준다.</td></tr>
+        <tr><td><strong>개인정보</strong></td><td data-l="대응">타인의 이름·관계 정보만 최소 저장, <strong>연락처 미수집</strong>, 개인정보처리방침과 계정 삭제 기능 마련(스토어 심사 필수).</td></tr>
+        <tr><td><strong>제휴 표시 의무</strong></td><td data-l="대응">제휴 링크임을 화면마다 배지와 문구로 명시하고, 기획서·스토어 설명에도 밝힌다.</td></tr>
+        <tr><td><strong>부적절한 선물·문구</strong></td><td data-l="대응">조의·위로 같은 민감한 상황은 선물 추천에서 제외합니다. 기일·제사는 후보를 만들지 않습니다.</td></tr>
+        <tr><td><strong>품절·가격 변동</strong></td><td data-l="대응">찜한 선물이 품절이면 대체 후보 2개를 즉시 제시. 링크 오류 시 검색 링크로 대체.</td></tr>
+        <tr><td><strong>인앱 뷰어 클립보드 차단</strong></td><td data-l="대응">복사가 막히면 직접 복사 창을 띄우고 링크 이동은 그대로 유지. 카톡 인앱 뷰어에서 한 번 확인 필요.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>성공 기준 (가설)</h3>
+    <ul class="bullet">
+      <li>사용자당 등록 기념일 <strong>3개 이상</strong></li>
+      <li>D-7 알림 중 <strong>“선물하기로 이동” 탭 비율 30% 이상</strong></li>
+      <li><strong>복사한 메시지를 실제로 전송한 비율</strong></li>
+      <li>알림 받은 사용자의 <strong>다음 기념일 재사용률</strong></li>
+    </ul>
+    <p class="small">수치는 목표 가설이며, 첫 테스트 결과를 보고 조정합니다.</p>
+  </section>
+
+  <!-- ================= 10 다음 단계 ================= -->
+  <section class="sec" id="todo">
+    <h2>10</h2>
+    <p class="title">다음 단계</p>
+
+    <h3>바로 할 일</h3>
+    <table class="tbl kv">
+      <thead><tr><th style="width:32%">할 일</th><th style="width:68%">내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1. 실기기에서 앱 열기</strong></td><td data-l="내용">폰에서 화면·터치·복사 동작 확인. 안드로이드 브라우저와 카톡 인앱 뷰어에서 웹 버전도 함께 확인</td></tr>
+        <tr><td><strong>2. 카카오 개발자 앱 등록</strong></td><td data-l="내용">앱 등록 → 카카오 로그인 + 메시지 전송 동의항목 신청 → 키 발급 (심사 기간 고려)</td></tr>
+        <tr><td><strong>3. 상품별 추천 링크 교체</strong></td><td data-l="내용">선물하기에서 상품별 큐레이터 링크를 발급받아 카탈로그 주소 교체</td></tr>
+        <tr><td><strong>4. 서버 연결</strong></td><td data-l="내용">프로젝트 생성 → 스키마 적용 → 앱에 연결 → 실제 저장 검증</td></tr>
+        <tr><td><strong>5. 사용자 20명 인터뷰</strong></td><td data-l="내용">최근 1년 기념일을 놓친 경험, 선물 구매 횟수·금액, 지금 쓰는 방법(캘린더·카톡 알림) 확인</td></tr>
+        <tr><td><strong>6. 스토어 준비</strong></td><td data-l="내용">개인정보처리방침, 계정 삭제, 제휴 고지, 스크린샷 — <strong>안드로이드 먼저</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h3>이 문서 이후에 결정할 것</h3>
+    <ul class="bullet">
+      <li>12월 프로모션 안에 첫 배포를 할지, 아니면 1월 수수료율 공개 후 손익을 다시 보고 결정할지</li>
+      <li>푸시 도입 전에 카톡 ‘나에게 보내기’만으로 먼저 테스트할지</li>
+      <li>2차 수익(가족 공유·프리미엄)을 넣을지 — 사용자 반응 후 결정</li>
+    </ul>
+  </section>
+
+  <div class="docinfo">
+    <strong>문서 정보</strong><br>
+    정책·수수료 조사 기준일 2026.11.14. 인용한 요율과 스토어 현황은 조사 시점의 값이며, 이후 공개 자료로 갱신될 수 있습니다. 손익 수치는 모두 가정을 둔 추정입니다.<br>
+    서비스 기획서 · 2026.11.15
+    <br><a class="top-link" href="#top">맨 위로</a>
+  </div>
+
+</div>
+</body>
+</html>
